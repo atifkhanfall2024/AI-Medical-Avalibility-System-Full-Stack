@@ -56,12 +56,17 @@ const UserSchema = new mongoose.Schema(
     },
     OTP:{
         type:String,
-        required:[true , "Otp is Required"]
+      
     },
       expiresIn: {
     type: Date,
     required: true,
   },
+  status:{
+    type:String,
+    enum:["Pending" , "Approved"],
+    default:"Pending"
+  }
   },
   { timestamps: true }
 );

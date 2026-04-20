@@ -2,6 +2,7 @@ const express = require('express')
 const DBConnection = require('./lib/db')
 const AuthRoute = require('./routes/AuthRoutes/AuthRoute')
 const session   = require('express-session')
+const User = require('./routes/UserRoute/user')
 const app = express()
 app.use(express.json())
 app.use(
@@ -15,6 +16,7 @@ app.use(
   })
 );
 app.use('/' , AuthRoute)
+app.use('/' , User)
 
 DBConnection().then(()=>{
     console.log('DB Connect Success');

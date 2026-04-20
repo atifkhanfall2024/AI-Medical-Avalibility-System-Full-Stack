@@ -6,16 +6,17 @@ const VerifyMail = async(req ,res)=>{
     try {
         
         const {otp} = req.body
-
+         //console.log(otp);
         const email = req.session.Email
+        //console.log(email);
         if(!email){
-            return res.status(401).json({success:false , message:'Session Expired'})
+            return res.status(401).json({success:false , message:'Click To Resend Otp'})
         }
 
        const user = await UserModel.findOne({Email:email})
        
        // verify otp 
-    console.log(user);
+    //console.log(user);
 
     if(Date.now()>user.expiresIn){
          return res.status(400).json({

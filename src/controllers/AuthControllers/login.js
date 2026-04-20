@@ -9,7 +9,7 @@ const Login = async(req,res)=>{
 
     // first of all we will check user by email
     //console.log(Email);
-
+      req.session.Email = Email
     if(!Email || Email === null || Email ===''){
                 return res.status(401).json({success:false , message:"Email is Required"})
     }
