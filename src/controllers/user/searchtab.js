@@ -3,11 +3,12 @@ const SearchingApi = require("../../services/AI/search")
 const RequestTablet = async(req,res)=>{
 
     try {
-        const {Query} = req.body
+        const {Query , Location} = req.body
 
        const response =  await SearchingApi(Query)
 
-       return res.json({message:response})
+       // now i want here to store user request
+       
 
     } catch (error) {
         return res.json({message:error})

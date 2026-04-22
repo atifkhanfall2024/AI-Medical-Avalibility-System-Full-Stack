@@ -1,4 +1,3 @@
-const mongoose = require('mongoose')
 const PharmacySchema = new mongoose.Schema({
   name: {
     type: String,
@@ -8,10 +7,11 @@ const PharmacySchema = new mongoose.Schema({
   location: {
     type: {
       type: String,
+      enum: ["Point"],
       default: "Point",
     },
     coordinates: {
-      type: [Number],
+      type: [Number], // [lng, lat]
       required: true,
     },
   },
@@ -22,15 +22,20 @@ const PharmacySchema = new mongoose.Schema({
   },
 
   phone: String,
-
   address: String,
 
-  createdAt: {
-    type: Date,
-    default: Date.now,
+  // 🔥 IMPORTANT
+  isApproved: {
+    type: Boolean,
+    default: false, // admin approval system
   },
-},{timestamps:true});
 
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User", // link pharmacy to user account
+  }
 
-const PharmacyModel = mongoose.model('Pharmacy' , PharmacySchema)
-module.exports = PharmacyModel
+}, { timestamps: true });
+
+// 🔥 GEO INDEX (VERY IMPORTANT)
+PharmacySchema.index({ location: "2dsphere" });

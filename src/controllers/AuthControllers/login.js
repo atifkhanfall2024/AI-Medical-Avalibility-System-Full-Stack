@@ -1,5 +1,5 @@
 const { Decrypt } = require("../../helpers/Bcryption/bcrypt")
-const SignJwt = require("../../helpers/JWT/token")
+const {SignJwt} = require("../../helpers/JWT/token")
 const UserModel = require("../../models/UserModel")
 
 const Login = async(req,res)=>{
@@ -34,7 +34,8 @@ const Login = async(req,res)=>{
      }
 
      // set cookies 
-     const token = await SignJwt({data:user._id})
+     const token = await SignJwt(user._id)
+     console.log(typeof token);
      //console.log(token);
 
     res.cookie('token', token, {
@@ -43,7 +44,7 @@ const Login = async(req,res)=>{
     sameSite: 'strict',
     maxAge: 24 * 60 * 60 * 1000
       })
-
+    //console.log(req.cookies.token);
     res.status(200).json({success:true , message:user})
 
  } catch (error) {

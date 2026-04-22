@@ -3,7 +3,9 @@ const DBConnection = require('./lib/db')
 const AuthRoute = require('./routes/AuthRoutes/AuthRoute')
 const session   = require('express-session')
 const User = require('./routes/UserRoute/user')
+const parser = require('cookie-parser')
 const app = express()
+app.use(parser())
 app.use(express.json())
 app.use(
   session({

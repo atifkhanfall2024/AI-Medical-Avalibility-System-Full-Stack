@@ -2,7 +2,14 @@ const jwt = require('jsonwebtoken')
 
 
 const SignJwt = async (data) => {
-  return await jwt.sign(data , process.env.Secret_Key , {expiresIn:'1d'} )
+  return await jwt.sign({id:data} , process.env.Secret_Key , {expiresIn:'1d'} )
 }
 
-module.exports = SignJwt
+const CompareToken = async(token)=>{
+  return await jwt.verify(token , process.env.Secret_Key)
+}
+
+module.exports = {
+  SignJwt,
+  CompareToken
+};
