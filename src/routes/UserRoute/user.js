@@ -6,7 +6,7 @@ const ValidateToken = require('../../middleware/ValidationToken')
 const User = express.Router()
 
 
-User.post('/userRequest' , ValidateToken , RequestTablet)
+User.post('/userRequest/create' , ValidateToken , RequestTablet)
 
 
 

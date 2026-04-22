@@ -21,8 +21,12 @@ const PharmacySchema = new mongoose.Schema({
     default: false,
   },
 
-  phone: String,
-  address: String,
+  phone: {
+    type:String,
+   match: /^(?:\+92|0092|0)3[0-9]{9}$/,
+   required:true
+  }
+  ,
 
   // 🔥 IMPORTANT
   isApproved: {
