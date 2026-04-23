@@ -1,3 +1,4 @@
+const mongoose = require('mongoose')
 const PharmacySchema = new mongoose.Schema({
   name: {
     type: String,
@@ -34,6 +35,12 @@ const PharmacySchema = new mongoose.Schema({
     default: false, // admin approval system
   },
 
+  VerifyPhoto:{
+      type:String,
+      required:true
+
+  },
+
   userId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User", // link pharmacy to user account
@@ -43,3 +50,4 @@ const PharmacySchema = new mongoose.Schema({
 
 // 🔥 GEO INDEX (VERY IMPORTANT)
 PharmacySchema.index({ location: "2dsphere" });
+module.exports = mongoose.model('Pharmacy', PharmacySchema);

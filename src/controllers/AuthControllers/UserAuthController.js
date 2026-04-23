@@ -2,6 +2,7 @@ const UserModel = require("../../models/UserModel")
 const {Encrypt} = require('../../helpers/Bcryption/bcrypt')
 const SignUp = async(req,res)=>{
 const sendOtp = require('../../services/nodemailer/sendmail')
+const validator = require('validator')
 // it take values form body
 try {
     
@@ -10,7 +11,14 @@ try {
      req.session.Email = Email 
       const hashpass = await Encrypt(Password)
        const otp = Math.floor(100000 + Math.random() * 900000);
-
+       if(!validator.isEmail(Email))
+       {
+        return res.status(403).json({success:false , message:'Email is INcorrect format'})
+       }
+       if(!validator.isStrongPassword(Password))
+       {
+        return res.status(403).json({success:false , message:'Password should be strong'})
+       }
        const hashOtp = await Encrypt(otp.toString())
        await sendOtp(Email , otp)
      const user = await UserModel(
