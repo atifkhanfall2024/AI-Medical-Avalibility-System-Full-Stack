@@ -1,4 +1,5 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
+
 const PharmacySchema = new mongoose.Schema({
   name: {
     type: String,
@@ -17,37 +18,47 @@ const PharmacySchema = new mongoose.Schema({
     },
   },
 
+  address: {
+    type: String,
+    required: true
+  },
+
   isOnline: {
     type: Boolean,
     default: false,
   },
 
-  phone: {
-    type:String,
-   match: /^(?:\+92|0092|0)3[0-9]{9}$/,
-   required:true
-  }
-  ,
-
-  // 🔥 IMPORTANT
   isApproved: {
     type: Boolean,
-    default: false, // admin approval system
+    default: false,
   },
 
-  VerifyPhoto:{
-      type:String,
-      required:true
+  phone: {
+    type: String,
+    match: /^(?:\+92|0092|0)3[0-9]{9}$/,
+    required: true
+  },
 
+  verificationDocument: {
+    type: String,
+    required: true
   },
 
   userId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "User", // link pharmacy to user account
+    ref: "User",
+    required: true,
+    unique: true
+  },
+
+  rating: {
+    type: Number,
+    default: 0
   }
 
 }, { timestamps: true });
 
-// 🔥 GEO INDEX (VERY IMPORTANT)
 PharmacySchema.index({ location: "2dsphere" });
+PharmacySchema.index({ isApproved: 1, isOnline: 1 });
+
 module.exports = mongoose.model('Pharmacy', PharmacySchema);
