@@ -6,7 +6,13 @@ const User = require('./routes/UserRoute/user')
 const parser = require('cookie-parser')
 const PharmacyRoutes = require('./routes/Pharmacy/PharmacyRoutes')
 const AdminRole = require('./routes/AdminRoute/AdminRoute')
+const cors = require("cors");
 const app = express()
+app.use(cors({
+  origin: "http://localhost:5173",
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true
+}));
 app.use(parser())
 app.use(express.json())
 app.use(

@@ -3,6 +3,7 @@ const AuthControllers = require('../../controllers/AuthControllers/UserAuthContr
 const VerifyMail = require('../../controllers/AuthControllers/VerifyMail')
 const Login = require('../../controllers/AuthControllers/login')
 const ResendOtp = require('../../controllers/AuthControllers/Resendotp')
+const Me = require('../../controllers/AuthControllers/me')
 
 const AuthRoute = express.Router()
 
@@ -11,7 +12,7 @@ AuthRoute.post('/signup' ,AuthControllers)
 AuthRoute.post('/Verifyemail' , VerifyMail)
 AuthRoute.post('/login' , Login)
 AuthRoute.post('/resendotp' , ResendOtp)
-
+AuthRoute.get('/me' , Me)
 
 
 module.exports = AuthRoute
