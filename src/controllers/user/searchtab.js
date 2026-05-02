@@ -30,12 +30,14 @@ if (!Query || !Location) {
             type: "Point",
             coordinates: Location,
           },
-          $maxDistance: 5000,
+          $maxDistance: 10000,
         },
       },
       isApproved: true,
       isOnline: true,
     });
+
+    console.log(pharmacies);
 
        return res.status(201).json({
       success: true,

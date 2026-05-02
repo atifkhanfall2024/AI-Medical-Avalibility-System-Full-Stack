@@ -6,7 +6,7 @@ const validator = require('validator')
 // it take values form body
 try {
     
-    const {Role , FullName , Email , Password , PhoneNumber} = req.body
+    const {Role , FullName , Email , Password , PhoneNumber , location , Photo} = req.body
      const expiresIn = new Date(Date.now() + 5 * 60 * 1000);
      req.session.Email = Email 
       const hashpass = await Encrypt(Password)
@@ -29,6 +29,11 @@ try {
             Password:hashpass,
             PhoneNumber,
             OTP:hashOtp,
+        Location:{
+            type:"Point",
+            coordinates:location
+        },
+        Photo ,
             expiresIn
         }
      )

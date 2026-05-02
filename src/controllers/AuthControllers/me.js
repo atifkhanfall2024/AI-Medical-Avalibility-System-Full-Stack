@@ -8,8 +8,9 @@ const Me = async (req, res) => {
     if (!token) {
       return res.status(401).json({ user: null });
     }
-
-    const decoded = CompareToken(token);
+   //console.log(token);
+    const decoded = await CompareToken(token);
+    //console.log(decoded.id);
     const user = await UserModel.findById(decoded.id).select('-Password');
 
     res.status(200).json({ user });

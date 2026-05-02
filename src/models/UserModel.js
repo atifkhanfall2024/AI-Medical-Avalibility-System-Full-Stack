@@ -43,6 +43,20 @@ const UserSchema = new mongoose.Schema(
       required: [true , "Phone Number is Required"],
       match: [/^\+92[0-9]{10}$/, "Use format +92XXXXXXXXXX"],
     },
+      Location: {
+    type: {
+      type: String,
+      enum: ["Point"],
+      default: "Point",
+    },
+    Photo :{
+      type:String 
+    } ,
+    coordinates: {
+      type: [Number], // [lng, lat]
+      required: true,
+    },
+  },
 
     Role: {
       type: String,
@@ -64,7 +78,7 @@ const UserSchema = new mongoose.Schema(
   },
   status:{
     type:String,
-    enum:["Pending" , "Approved"],
+    enum:["Pending" , "Approved" , "Rejected"],
     default: function () {
     return this.role === 'Pharmacy' || 'Admin' ? 'Pending' : 'Approved';
   }

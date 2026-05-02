@@ -1,12 +1,12 @@
 const UserModel = require("../../models/UserModel")
 
-const AdminCheckStatus = async(req,res)=>{
+const GetAdminCheckStatus = async(req,res)=>{
 
     try {
         
        const getUsers = await UserModel.find({
         status : "Pending" ,
-        Role: "Pharmacy",
+        Role: "Admin",
         IsVerified:true
       }).select('-Password')
       if(!getUsers){
@@ -20,4 +20,4 @@ const AdminCheckStatus = async(req,res)=>{
 
 }
 
-module.exports = AdminCheckStatus
+module.exports = GetAdminCheckStatus

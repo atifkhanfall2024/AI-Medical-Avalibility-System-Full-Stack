@@ -45,7 +45,16 @@ const Login = async(req,res)=>{
     maxAge: 24 * 60 * 60 * 1000
       })
     //console.log(req.cookies.token);
-    res.status(200).json({success:true , message:user})
+   res.json({
+  success: true,
+  user: {
+    _id: user._id,
+    FullName: user.FullName,
+    Email: user.Email ,
+    Role:user.Role,
+    status:user.status
+  }
+});
 
  } catch (error) {
               res.json({
