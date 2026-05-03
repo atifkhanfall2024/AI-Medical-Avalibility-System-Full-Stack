@@ -8,7 +8,7 @@ const PharmacyRequests = async (req, res) => {
     const pharmacy = await PharmacyModel.findOne({
       userId: req.user._id
     });
-
+   
     if (!pharmacy) {
       return res.status(404).json({
         success: false,
@@ -30,7 +30,7 @@ const PharmacyRequests = async (req, res) => {
           $maxDistance: 5000
         }
       }
-    });
+    }).populate("userId" , "FullName PhoneNumber");
 
     res.status(200).json({
       success: true,

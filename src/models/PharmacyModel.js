@@ -18,11 +18,6 @@ const PharmacySchema = new mongoose.Schema({
     },
   },
 
-  address: {
-    type: String,
-    required: true
-  },
-
   isOnline: {
     type: Boolean,
     default: false,
@@ -39,10 +34,7 @@ const PharmacySchema = new mongoose.Schema({
     required: true
   },
 
-  verificationDocument: {
-    type: String,
-    required: true
-  },
+
 
   userId: {
     type: mongoose.Schema.Types.ObjectId,
