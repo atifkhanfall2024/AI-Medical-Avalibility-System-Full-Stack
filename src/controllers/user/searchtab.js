@@ -37,12 +37,12 @@ if (!Query || !Location) {
       isOnline: true,
     });
 
-    console.log(pharmacies);
+    //console.log(pharmacies);
 
        return res.status(201).json({
       success: true,
       message: "Request created successfully",
-      pharmacies,
+      pharma: pharmacies,
       data: request
     });
 
