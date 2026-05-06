@@ -5,7 +5,7 @@ const OnlineOffline = async(req,res)=>{
         
         const { id , IsActive} = req.body
 
-        if(!IsActive || !id){
+        if(IsActive===undefined || !id){
             return res.status(401).json({success:false , message:"Field is Required"})
         }
   if (typeof IsActive !== "boolean") {
@@ -25,3 +25,5 @@ const OnlineOffline = async(req,res)=>{
          return res.status(401).json({success:false , message:error || error.message || "Something went Wrong"})
     }
 }
+
+module.exports = OnlineOffline
