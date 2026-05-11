@@ -6,11 +6,22 @@ const validator = require('validator')
 // it take values form body
 try {
     
-    const {Role , FullName , Email , Password , PhoneNumber , location , Photo} = req.body
+    const {Role , FullName , Email , Password , PhoneNumber} = req.body
+    let location = req.body.location
+    const License = req.files?.License?.[0]?.path || "";
+    //console.log("photo " ,  req.file ? req.file.path : "");
      const expiresIn = new Date(Date.now() + 5 * 60 * 1000);
      req.session.Email = Email 
       const hashpass = await Encrypt(Password)
        const otp = Math.floor(100000 + Math.random() * 900000);
+
+if (Role === "Pharmacy" && !License) {
+  return res.status(400).json({
+    success: false,
+    message: "Pharmacy license is required",
+  });
+}
+
        if(!validator.isEmail(Email))
        {
         return res.status(403).json({success:false , message:'Email is INcorrect format'})
@@ -21,7 +32,13 @@ try {
        }
        const hashOtp = await Encrypt(otp.toString())
        await sendOtp(Email , otp)
-     const user = await UserModel(
+
+    if (typeof location === "string") {
+  location = JSON.parse(location);
+}
+location = location.map(Number);
+
+     const user =  new UserModel(
         {
             Role ,
             FullName,
@@ -33,8 +50,9 @@ try {
             type:"Point",
             coordinates:location
         },
-        Photo ,
-            expiresIn
+        Photo:req.files?.Photo?.[0]?.path,
+        License ,
+        expiresIn
         }
      )
      // await sendOTP(PhoneNumber)

@@ -49,14 +49,18 @@ const UserSchema = new mongoose.Schema(
       enum: ["Point"],
       default: "Point",
     },
-    Photo :{
-      type:String 
-    } ,
     coordinates: {
       type: [Number], // [lng, lat]
       required: true,
     },
   },
+  Photo :{
+      type:String 
+    } ,
+
+    License: {
+  type: String
+},
 
     Role: {
       type: String,

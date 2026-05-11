@@ -52,7 +52,9 @@ const Login = async(req,res)=>{
     FullName: user.FullName,
     Email: user.Email ,
     Role:user.Role,
-    status:user.status
+    status:user.status,
+    Photo:user.Photo ,
+    License:user.License
   }
 });
 

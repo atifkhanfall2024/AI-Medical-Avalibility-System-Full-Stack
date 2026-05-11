@@ -6,6 +6,7 @@ const User = require('./routes/UserRoute/user')
 const parser = require('cookie-parser')
 const PharmacyRoutes = require('./routes/Pharmacy/PharmacyRoutes')
 const AdminRole = require('./routes/AdminRoute/AdminRoute')
+const uploadRoute = require("./routes/cloudinaryRoute/cloudRoute");
 const cors = require("cors");
 const app = express()
 app.use(cors({
@@ -29,7 +30,7 @@ app.use('/' , AuthRoute)
 app.use('/' , User)
 app.use('/' , PharmacyRoutes)
 app.use('/' , AdminRole)
-
+app.use("/", uploadRoute);
 DBConnection().then(()=>{
     console.log('DB Connect Success');
     app.listen(3000,()=>{
