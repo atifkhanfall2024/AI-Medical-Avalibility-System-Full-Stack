@@ -5,15 +5,21 @@ const session   = require('express-session')
 const User = require('./routes/UserRoute/user')
 const parser = require('cookie-parser')
 const PharmacyRoutes = require('./routes/Pharmacy/PharmacyRoutes')
+const http = require('http')
 const AdminRole = require('./routes/AdminRoute/AdminRoute')
+const socket = require('socket.io')
 const uploadRoute = require("./routes/cloudinaryRoute/cloudRoute");
 const cors = require("cors");
+const InitializeSocket = require('./utils/Socket')
 const app = express()
 app.use(cors({
   origin: "http://localhost:5173",
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true
 }));
+
+const server = http.createServer(app)
+InitializeSocket(server)
 app.use(parser())
 app.use(express.json())
 app.use(
@@ -31,9 +37,11 @@ app.use('/' , User)
 app.use('/' , PharmacyRoutes)
 app.use('/' , AdminRole)
 app.use("/", uploadRoute);
+
+
 DBConnection().then(()=>{
     console.log('DB Connect Success');
-    app.listen(3000,()=>{
+    server.listen(3000,()=>{
     console.log('Server is Running');
 })
 }).catch((err)=>{
