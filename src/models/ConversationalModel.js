@@ -1,45 +1,46 @@
-const mongoose = require('mongoose')
-const ConversationSchema = new mongoose.Schema({
+const mongoose = require("mongoose");
 
-   requestId:{
-      type:mongoose.Schema.Types.ObjectId,
-      ref:"Request"
-   },
+const MessageSchema = new mongoose.Schema(
+  {
+    senderId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
 
-   pharmacyId:{
-      type:mongoose.Schema.Types.ObjectId,
-      ref:"Pharmacy"
-   },
+    text: {
+      type: String,
+      required: true,
+      trim: true,
+    },
 
-   messages:[
+    name: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+
+    time: {
+      type: String,
+      required: true,
+    },
+  },
+  { timestamps: true }
+);
+
+const ConversationSchema = new mongoose.Schema(
+  {
+    participants: [
       {
-          senderId:{
-            type:mongoose.Schema.Types.ObjectId,
-            ref:"User"
-         },
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+        required: true,
+      },
+    ],
 
-            text:{
-            type:String,
-            required:true
-         },
+    messages: [MessageSchema],
+  },
+  { timestamps: true }
+);
 
-         seen:{
-            type:Boolean,
-            default:false
-         },
-
-         createdAt:{
-            type:Date,
-            default:Date.now
-         }
-      }
-   ],
-
-   lastMessage:String,
-
-   lastMessageTime:Date
-
-},{timestamps:true})
-
-
-module.exports = mongoose.model('ConversationalModel' , ConversationSchema)
+module.exports = mongoose.model("Conversation", ConversationSchema);
