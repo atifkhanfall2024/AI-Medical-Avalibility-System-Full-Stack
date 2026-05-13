@@ -84,7 +84,9 @@ const UserSchema = new mongoose.Schema(
     type:String,
     enum:["Pending" , "Approved" , "Rejected"],
     default: function () {
-    return this.role === 'Pharmacy' || 'Admin' ? 'Pending' : 'Approved';
+    return this.Role === "Pharmacy" || this.Role === "Admin"
+  ? "Pending"
+  : "Approved";
   }
   }
   },

@@ -11,6 +11,8 @@ const socket = require('socket.io')
 const uploadRoute = require("./routes/cloudinaryRoute/cloudRoute");
 const cors = require("cors");
 const InitializeSocket = require('./utils/Socket')
+const ChatRoute = require('./routes/Chats/chatRpute')
+const Paymentrouter = require('./routes/paymentRoute/paymentRoute')
 const app = express()
 app.use(cors({
   origin: "http://localhost:5173",
@@ -37,6 +39,8 @@ app.use('/' , User)
 app.use('/' , PharmacyRoutes)
 app.use('/' , AdminRole)
 app.use("/", uploadRoute);
+app.use('/' , ChatRoute)
+app.use('/' , Paymentrouter)
 
 
 DBConnection().then(()=>{
