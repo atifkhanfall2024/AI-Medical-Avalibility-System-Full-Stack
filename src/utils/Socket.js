@@ -22,56 +22,84 @@ const InitializeSocket = (server)=>{
        socket.join(roomId)
     })
 
-    socket.on('SendMessages' , async({name , userid , id , text , time , hour , minute})=>{
-  const roomId = [userid , id].sort().join("_")
-     //  console.log(name + ' Send Message ' , text);
-       const free_chat_limit = 10
-       let chat = await ConversationalModel.findOne({
-        participants:{$all:[userid , id]}
-       })
-       if(!chat){
-      chat = new ConversationalModel({
-        participants:[userid , id],
-        messages:[]
-      })
-       }
-    const paidSubscription = await PaymentModel.findOne({
-  userId: userid,
-  status: "paid",
-  plan: { $in: ["basic", "pro", "premium"] },
-  subscriptionEndDate: { $gt: new Date() },
-}).sort({ createdAt: -1 });
+    socket.on("SendMessages", async ({ name, userid, id, text, time, hour, minute }) => {
+  try {
+    if (!userid || !id || !text) {
+      socket.emit("MessageError", {
+        message: "userid, receiver id and text are required",
+      });
+      return;
+    }
 
-const hasActiveSubscription = !!paidSubscription;
+    const roomId = [userid, id].sort().join("_");
+    const free_chat_limit = 10;
 
-
-      if (!hasActiveSubscription) {
-  const countUserMessage = chat.messages.filter(
-    (m) => m.senderId.toString() === userid.toString()
-  ).length;
-
-  console.log("Free user message count:", countUserMessage);
-
-  if (countUserMessage >= free_chat_limit) {
-    socket.emit("MessageLimitReached", {
-      message: "Free message limit reached. Please buy a subscription.",
+    let chat = await ConversationalModel.findOne({
+      participants: { $all: [userid, id] },
     });
-    return;
+
+    if (!chat) {
+      chat = new ConversationalModel({
+        participants: [userid, id],
+        messages: [],
+      });
+    }
+
+    const paidSubscription = await PaymentModel.findOne({
+      userId: userid,
+      status: "paid",
+      plan: { $in: ["basic", "pro", "premium"] },
+      subscriptionEndDate: { $gt: new Date() },
+    }).sort({ createdAt: -1 });
+
+    const hasActiveSubscription = Boolean(paidSubscription);
+
+    console.log("Has active subscription:", hasActiveSubscription);
+    console.log("Paid subscription:", paidSubscription);
+
+    if (!hasActiveSubscription) {
+      const countUserMessage = chat.messages.filter(
+        (m) => m.senderId && m.senderId.toString() === userid.toString()
+      ).length;
+
+      console.log("Free user message count:", countUserMessage);
+
+      if (countUserMessage >= free_chat_limit) {
+        socket.emit("MessageLimitReached", {
+          message: "Free message limit reached. Please buy a subscription.",
+        });
+        return;
+      }
+    }
+
+    const newMessage = {
+      senderId: userid,
+      text,
+      name,
+      time,
+    };
+
+    chat.messages.push(newMessage);
+
+    await chat.save();
+
+    io.to(roomId).emit("RecievedMessage", {
+      senderId: userid,
+      userid,
+      name,
+      text,
+      time,
+      hour,
+      minute,
+    });
+  } catch (error) {
+    console.log("SendMessages socket error:", error);
+
+    socket.emit("MessageError", {
+      message: "Something went wrong while sending message",
+    });
   }
-}
-
-       chat.messages.push({
-        senderId:userid,
-        text,
-        name,
-        time
-       })
-
-       await chat.save()
-
-       io.to(roomId).emit('RecievedMessage' , {name, userid , text , time , hour , minute})
-
-    })
+});
 
     
 

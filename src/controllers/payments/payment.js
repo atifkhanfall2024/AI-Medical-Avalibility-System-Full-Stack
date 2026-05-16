@@ -19,8 +19,7 @@ const plans = {
 const CreateSafepayCheckout = async (req, res) => {
   try {
     const { plan } = req.body;
-
-    const userId = req.user._id; 
+    const userId = req.user._id;
 
     if (!plan) {
       return res.status(400).json({
@@ -38,13 +37,10 @@ const CreateSafepayCheckout = async (req, res) => {
 
     const selectedPlan = plans[plan];
 
-    // 1. Create Safepay payment token
     const payment = await safepay.payments.create({
       amount: selectedPlan.amount,
       currency: "PKR",
     });
-
-    console.log("Safepay payment:", payment);
 
     const token = payment?.token;
 
@@ -56,20 +52,17 @@ const CreateSafepayCheckout = async (req, res) => {
       });
     }
 
-    // 2. Create unique order id
     const orderId = `AMAS-${Date.now()}-${userId}`;
 
-    // 3. Create Safepay checkout URL
     const checkoutURL = safepay.checkout.create({
       token,
       orderId,
-      cancelUrl: `${process.env.FRONTEND_URL}/payment-cancel`,
-      redirectUrl: `${process.env.FRONTEND_URL}/payment-success?orderId=${orderId}&plan=${plan}`,
+      cancelUrl: `${process.env.FRONTEND_URL}/payment-cancel?orderId=${orderId}`,
+      redirectUrl: `${process.env.FRONTEND_URL}/payment-success?orderId=${orderId}`,
       source: "custom",
       webhooks: true,
     });
 
-    // 4. Store payment in DB as pending
     const paymentRecord = await PaymentModel.create({
       userId,
       plan,
