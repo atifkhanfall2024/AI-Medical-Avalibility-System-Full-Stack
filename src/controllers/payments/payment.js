@@ -57,8 +57,8 @@ const CreateSafepayCheckout = async (req, res) => {
     const checkoutURL = safepay.checkout.create({
       token,
       orderId,
-      cancelUrl: `${process.env.FRONTEND_URL}/payment-cancel?orderId=${orderId}`,
-      redirectUrl: `${process.env.FRONTEND_URL}/payment-success?orderId=${orderId}`,
+      cancelUrl: `https://ai-medical-availability-system-full.vercel.app/payment-cancel?orderId=${orderId}`,
+      redirectUrl: `https://ai-medical-availability-system-full.vercel.app/payment-success?orderId=${orderId}`,
       source: "custom",
       webhooks: true,
     });
