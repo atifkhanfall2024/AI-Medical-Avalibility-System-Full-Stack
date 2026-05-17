@@ -5,7 +5,12 @@ const PaymentModel = require('../models/PaymentModel')
 const InitializeSocket = (server)=>{
     const io = socket(server , {
       cors:{
-          origin: "http://localhost:5173",
+          origin:[
+  "http://localhost:5173",
+  "http://65.0.89.63",
+  "https://ai-medical-availability-system-full.vercel.app",
+  "https://ai-medical-availability-system-full-stack-frontend-fbyoyz9wq.vercel.app",
+],
       methods: ["GET", "POST", "PUT", "DELETE"],
       credentials: true
       }
