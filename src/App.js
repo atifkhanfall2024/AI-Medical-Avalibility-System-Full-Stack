@@ -15,11 +15,14 @@ const ChatRoute = require('./routes/Chats/chatRpute')
 const Paymentrouter = require('./routes/paymentRoute/paymentRoute')
 const app = express()
 app.use(cors({
-  origin: "http://localhost:5173",
+   origin: [
+    "http://65.0.89.63",
+    "https://ai-medical-availability-system-full.vercel.app"
+  ],
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true
 }));
-
+//console.log(process.env.SAFEPAY_API);
 const server = http.createServer(app)
 InitializeSocket(server)
 app.use(parser())
